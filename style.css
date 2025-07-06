@@ -1,0 +1,41 @@
+body {
+  font-family: sans-serif;
+  font-size: 130%;
+  margin: 0;
+}
+
+ol {
+  counter-reset: item;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ol > li {
+  align-items: baseline;
+  counter-increment: item;
+  display: grid;
+  grid-template-columns: 1rem 1rem 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+ol > li:before {
+  content: counter(item);
+  display: block;
+  font-family: monospace;
+  text-align: right;
+}
+
+.step {
+  border-left: 0.5rem solid #f35b04;
+}
+
+.step:has(input[type="checkbox"]:checked) {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+.rest {
+  border-left: 0.5rem solid #7678ed;
+}

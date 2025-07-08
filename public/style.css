@@ -39,3 +39,8 @@ ol > li:before {
 .rest {
   border-left: 0.5rem solid #7678ed;
 }
+
+.rest:has(input[type="checkbox"]:checked) {
+  opacity: 0.4;
+  text-decoration: line-through;
+}

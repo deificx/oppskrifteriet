@@ -14,18 +14,17 @@
   </article>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { onBeforeMount, onMounted, ref } from "vue";
-import RecipeStep, {
-  type RecipeStep as RecipeStepType,
-} from "./components/recipe-step.vue";
-import { time } from "./utils/time";
+import RecipeStep from "@/components/recipe-step.vue";
+import type { Step } from "@/types";
+import { time } from "@/utils/time";
 
 const now = ref<Date>();
 const timer = ref<number>();
 const currentStep = ref<number>(0);
 
-const steps: RecipeStepType[] = [
+const steps: Step[] = [
   {
     type: "step",
     duration: 600,

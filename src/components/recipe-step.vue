@@ -10,18 +10,13 @@
   </li>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed } from "vue";
-
-export interface RecipeStep {
-  duration: number;
-  text: string;
-  type: "step" | "rest";
-}
+import type { Step } from "@/types";
 
 defineEmits<{ (e: "completed", idx: number): void }>();
 
-const props = defineProps<RecipeStep & { disabled: boolean; idx: number }>();
+const props = defineProps<Step & { disabled: boolean; idx: number }>();
 
 const id = computed(() => `step-${props.idx + 1}`);
 </script>

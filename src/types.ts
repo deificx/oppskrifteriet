@@ -1,7 +1,7 @@
 export interface Step {
   duration: number;
   text: string;
-  type: "step" | "rest";
+  type: 'step' | 'rest';
 }
 
 export interface Ingredient {

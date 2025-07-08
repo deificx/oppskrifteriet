@@ -11,10 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import type { Step } from "@/types";
+import { computed } from 'vue';
 
-defineEmits<{ (e: "completed", idx: number): void }>();
+import type { Step } from '@/types';
+
+defineEmits<{ (e: 'completed', idx: number): void }>();
 
 const props = defineProps<Step & { disabled: boolean; idx: number }>();
 

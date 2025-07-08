@@ -1,14 +1,13 @@
-import { createApp } from "vue";
+import { createApp } from 'vue';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
-import { createWebHashHistory, createRouter } from "vue-router";
-
-import BaseApp from "./apps/base-app.vue";
-import RecipeApp from "./apps/recipe-app.vue";
-import CreateApp from "./apps/create-app.vue";
+import BaseApp from '@/apps/base-app.vue';
+import CreateApp from '@/apps/create-app.vue';
+import RecipeApp from '@/apps/recipe-app.vue';
 
 const routes = [
-  { path: "/", component: RecipeApp },
-  { path: "/create", component: CreateApp },
+  { path: '/', component: RecipeApp },
+  { path: '/create', component: CreateApp },
 ];
 
 const router = createRouter({
@@ -16,4 +15,4 @@ const router = createRouter({
   routes,
 });
 
-createApp(BaseApp).use(router).mount("#app");
+createApp(BaseApp).use(router).mount('#app');

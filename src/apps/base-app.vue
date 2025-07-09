@@ -1,4 +1,7 @@
-<template><top-section></top-section><router-view></router-view></template>
+<template>
+  <top-section />
+  <router-view />
+</template>
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router';

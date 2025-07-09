@@ -8,8 +8,7 @@
         :disabled="idx !== currentStep"
         :idx="idx"
         :key="idx"
-        @completed="onCompleted"
-      ></recipe-step>
+        @completed="onCompleted" />
     </ol>
   </article>
 </template>

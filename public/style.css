@@ -31,7 +31,7 @@ ol > li:before {
   border-left: 0.5rem solid #f35b04;
 }
 
-.step:has(input[type="checkbox"]:checked) {
+.step:has(input[type='checkbox']:checked) {
   opacity: 0.4;
   text-decoration: line-through;
 }
@@ -40,7 +40,7 @@ ol > li:before {
   border-left: 0.5rem solid #7678ed;
 }
 
-.rest:has(input[type="checkbox"]:checked) {
+.rest:has(input[type='checkbox']:checked) {
   opacity: 0.4;
   text-decoration: line-through;
 }

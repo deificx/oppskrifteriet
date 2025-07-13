@@ -1,9 +1,14 @@
 <template>
   <div class="top-section">
-    <h1 class="top-section__header">oppskrifteriet.no</h1>
+    <router-link to="/">
+      <h1 class="top-section__header">oppskrifteriet.no</h1>
+    </router-link>
     <nav class="top-section__nav">
-      <router-link to="/">Home</router-link>
       <router-link to="/create">Create</router-link>
+      <a
+        href="https://github.com/login/oauth/authorize?client_id=Ov23liF44XaD6SRpkeEL">
+        Login with GitHub
+      </a>
     </nav>
   </div>
 </template>

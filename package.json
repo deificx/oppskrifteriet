@@ -32,6 +32,7 @@
     "trailingComma": "all"
   },
   "dependencies": {
+    "vue": "^3.5.17",
     "vue-router": "^4.5.1",
     "vue-search-select": "^3.2.0"
   },
@@ -43,8 +44,7 @@
     "gh-pages": "^6.3.0",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
-    "vite": "^7.0.2",
-    "vue": "^3.5.17"
+    "vite": "^7.0.2"
   },
   "packageManager": "pnpm@10.12.4"
 }

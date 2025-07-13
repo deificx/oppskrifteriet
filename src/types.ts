@@ -1,7 +1,14 @@
+export type StepType = 'step' | 'rest';
+
 export interface Step {
-  duration: number;
+  duration:
+    | {
+        min: number;
+        max: number;
+      }
+    | number;
   text: string;
-  type: 'step' | 'rest';
+  type: StepType;
 }
 
 export interface Ingredient {

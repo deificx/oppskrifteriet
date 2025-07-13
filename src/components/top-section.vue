@@ -1,6 +1,6 @@
 <template>
   <div class="top-section">
-    <h1 class="top-section__header">Bakeriet</h1>
+    <h1 class="top-section__header">oppskrifteriet.no</h1>
     <nav class="top-section__nav">
       <router-link to="/">Home</router-link>
       <router-link to="/create">Create</router-link>

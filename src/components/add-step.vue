@@ -11,7 +11,8 @@
       v-model="type" />
     <text-input
       placeholder="f.eks. Legg til Hvetemel, vann, og salt"
-      type="text" />
+      type="text"
+      v-model="text" />
   </fieldset>
 </template>
 
@@ -31,8 +32,10 @@ const emit = defineEmits<{
 }>();
 
 const type = ref<StepType>(props.type);
+const text = ref<string>(props.text);
 
 watch(type, (u) => emit('type', u));
+watch(text, (t) => emit('text', t));
 </script>
 
 <style lang="css" scoped>

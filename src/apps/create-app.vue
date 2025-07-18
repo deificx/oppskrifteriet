@@ -39,7 +39,8 @@ import AddIngredient from '@/components/add-ingredient.vue';
 import AddStep from '@/components/add-step.vue';
 import TextInput from '@/components/text-input.vue';
 import { Ingredient, Recipe, Step, StepType } from '@/types';
-import { getItem, setItem } from '@/utils/store';
+import { pretty } from '@/utils/pretty';
+import { deleteItem, getItem, setItem } from '@/utils/store';
 import { createIssue } from '@/utils/user';
 
 const recipe = reactive<Recipe>({
@@ -83,8 +84,16 @@ function save() {
   setItem('oppskrift', recipe);
 }
 
-function submit() {
-  createIssue(recipe.title, JSON.stringify(recipe, null, 2));
+async function submit() {
+  const success = await createIssue(recipe.title, pretty(recipe));
+  if (!success) {
+    return;
+  }
+  deleteItem('oppskrift');
+  recipe.title = '';
+  recipe.description = '';
+  recipe.ingredients = [];
+  recipe.steps = [];
 }
 
 watch(recipe, save, { deep: true });

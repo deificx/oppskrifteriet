@@ -11,7 +11,7 @@
     "build": "vite build",
     "fmt": "prettier -w src/*",
     "start": "vite",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "prettier": {
     "bracketSameLine": true,
@@ -44,7 +44,8 @@
     "gh-pages": "^6.3.0",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
-    "vite": "^7.0.2"
+    "vite": "^7.0.2",
+    "vitest": "^3.2.4"
   },
-  "packageManager": "pnpm@10.12.4"
+  "packageManager": "pnpm@10.13.1"
 }

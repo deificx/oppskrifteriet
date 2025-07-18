@@ -39,3 +39,11 @@ export function getItem(key: KEY) {
   }
   return value;
 }
+
+export function deleteItem(key: KEY) {
+  try {
+    window.localStorage.removeItem(`${PREFIX}${key}`);
+  } catch (reason: unknown) {
+    console.error('failed to access localStorage: %s', reason);
+  }
+}

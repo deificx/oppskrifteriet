@@ -1,5 +1,7 @@
 import { reactive } from 'vue';
 
+import { getItem, setItem } from '@/utils/store';
+
 export const user = reactive({
   accessToken: undefined as string | undefined,
   avatar: undefined as string | undefined,
@@ -21,10 +23,7 @@ export async function tokenExchange() {
       'token_type' in data &&
       data.token_type === 'bearer'
     ) {
-      window.localStorage.setItem(
-        'oppskrifteriet.no:access_token',
-        data.access_token,
-      );
+      setItem('accessToken', data.access_token);
       user.accessToken = data.access_token;
       return true;
     }
@@ -35,6 +34,10 @@ export async function tokenExchange() {
 }
 
 export async function getUser() {
+  const localUser = getItem('githubUser');
+  if (localUser && typeof localUser === 'object') {
+    updateUser(localUser);
+  }
   if (user.name) {
     console.log('user already fetched');
     return;
@@ -52,24 +55,28 @@ export async function getUser() {
       },
     });
     const data = await res.json();
-    console.log(JSON.stringify(data, null, 2));
-    if ('name' in data && typeof data.name === 'string') {
-      user.name = data.name;
+    if (data) {
+      setItem('githubUser', data);
     }
-    if ('avatar_url' in data && typeof data.avatar_url === 'string') {
-      user.avatar = data.avatar_url;
-    }
+    updateUser(data);
     return data;
   } catch (reason: unknown) {
     console.error(`failed to fetch user: ${JSON.stringify(reason)}`);
   }
 }
 
+function updateUser(data: Record<PropertyKey, unknown>) {
+  if ('name' in data && typeof data.name === 'string') {
+    user.name = data.name;
+  }
+  if ('avatar_url' in data && typeof data.avatar_url === 'string') {
+    user.avatar = data.avatar_url;
+  }
+}
+
 export function init() {
   try {
-    const accessToken = window.localStorage.getItem(
-      'oppskrifteriet.no:access_token',
-    );
+    const accessToken = getItem('accessToken');
     if (typeof accessToken === 'string') {
       user.accessToken = accessToken;
       getUser();

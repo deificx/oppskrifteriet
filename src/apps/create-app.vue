@@ -39,6 +39,7 @@ import AddIngredient from '@/components/add-ingredient.vue';
 import AddStep from '@/components/add-step.vue';
 import TextInput from '@/components/text-input.vue';
 import { Ingredient, Recipe, Step, StepType } from '@/types';
+import { getItem, setItem } from '@/utils/store';
 import { createIssue } from '@/utils/user';
 
 const recipe = reactive<Recipe>({
@@ -79,14 +80,7 @@ function deleteStep(idx: number) {
 }
 
 function save() {
-  try {
-    window.localStorage.setItem(
-      'oppskrifteriet.no:oppskrift',
-      JSON.stringify(recipe),
-    );
-  } catch (reason: unknown) {
-    console.error(`failed to save recipe: ${JSON.stringify(reason)}`);
-  }
+  setItem('oppskrift', recipe);
 }
 
 function submit() {
@@ -96,17 +90,11 @@ function submit() {
 watch(recipe, save, { deep: true });
 
 onMounted(() => {
-  try {
-    const loadedRecipe = JSON.parse(
-      window.localStorage.getItem('oppskrifteriet.no:oppskrift') ?? '{}',
-    );
-    if (typeof loadedRecipe !== 'object' || loadedRecipe === null) {
-      return;
-    }
-    Object.assign(recipe, loadedRecipe);
-  } catch (reason: unknown) {
-    console.error(`failed to load recipe: ${JSON.stringify(reason)}`);
+  const loadedRecipe = getItem('oppskrift');
+  if (typeof loadedRecipe !== 'object' || loadedRecipe === null) {
+    return;
   }
+  Object.assign(recipe, loadedRecipe);
 });
 </script>
 

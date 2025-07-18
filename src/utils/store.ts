@@ -1,6 +1,6 @@
 const PREFIX = 'oppskrifteriet.no:';
 
-type KEY = 'accessToken' | 'githubUser';
+type KEY = 'accessToken' | 'githubUser' | 'oppskrift';
 
 export function setItem(
   key: KEY,

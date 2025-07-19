@@ -8,7 +8,10 @@ export function pretty(recipe: Recipe) {
   const title = `# ${recipe.title}`;
   const description = `> ${recipe.description}`;
   const steps = recipe.steps
-    .map((step, index) => `${index + 1}. ${step.text}`)
+    .map(
+      (step, index) =>
+        `${index + 1}. ${step.text}\n\t- time: ${step.duration} seconds\n\t- type: ${step.type}`,
+    )
     .join('\n');
 
   return `${title}\n\n${description}\n\n| Ingrediens | Mengde |\n| --- | --- |\n${ingredients}\n\n## Steps\n\n${steps}\n`;

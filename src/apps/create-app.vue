@@ -24,6 +24,7 @@
         :type="step.type"
         @text="(text: string) => updateStep(idx, { text })"
         @type="(type: StepType) => updateStep(idx, { type })"
+        @duration="(duration: number) => updateStep(idx, { duration })"
         @delete="() => deleteStep(idx)"></component>
     </template>
     <button @click.prevent="addStep">Legg til steg</button>

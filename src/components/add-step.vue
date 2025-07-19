@@ -1,6 +1,6 @@
 <template>
   <fieldset class="add-step">
-    <button @click.prevent="$emit('delete')">slett</button>
+    <button @click.prevent="$emit('delete')">🚮</button>
     <model-select
       :options="[
         { text: 'Steg', value: 'step' },
@@ -13,6 +13,7 @@
       placeholder="f.eks. Legg til Hvetemel, vann, og salt"
       type="text"
       v-model="text" />
+    <text-input placeholder="f.eks. 200s" type="number" v-model="duration" />
   </fieldset>
 </template>
 
@@ -23,19 +24,22 @@ import { ModelSelect } from 'vue-search-select';
 import TextInput from '@/components/text-input.vue';
 import { StepType } from '@/types';
 
-const props = defineProps<{ text: string; type: StepType }>();
+const props = defineProps<{ duration: number; text: string; type: StepType }>();
 
 const emit = defineEmits<{
   text: [text: string];
   type: [type: StepType];
   delete: void;
+  duration: [duration: number];
 }>();
 
 const type = ref<StepType>(props.type);
 const text = ref<string>(props.text);
+const duration = ref<number>(props.duration);
 
 watch(type, (u) => emit('type', u));
 watch(text, (t) => emit('text', t));
+watch(duration, (d) => emit('duration', d));
 </script>
 
 <style lang="css" scoped>
@@ -47,6 +51,6 @@ watch(text, (t) => emit('text', t));
 }
 
 .add-step__type {
-  width: 6.25rem !important;
+  max-width: 6rem;
 }
 </style>

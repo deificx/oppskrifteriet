@@ -11,3 +11,5 @@
 ## Steps
 
 1. Mix ingredients
+	- time: 0 seconds
+	- type: step

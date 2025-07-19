@@ -1,6 +1,6 @@
 <template>
   <fieldset class="add-ingredient">
-    <button @click.prevent="$emit('delete')">slett</button>
+    <button @click.prevent="$emit('delete')">🚮</button>
     <text-input v-model="name" placeholder="f.eks. Hvetemel" type="text" />
     <text-input v-model="amount" type="number" />
     <model-select
@@ -29,7 +29,7 @@ const emit = defineEmits<{
   delete: void;
 }>();
 
-const amount = ref<number>(0);
+const amount = ref<number>(props.amount);
 const name = ref<string>(props.name);
 const unit = ref<string>(props.unit);
 

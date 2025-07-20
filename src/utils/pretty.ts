@@ -1,5 +1,26 @@
 import { Recipe } from '@/types';
 
+function formatDuration(duration: { min: number; max: number }) {
+  if (duration.min === duration.max) {
+    return `${duration.min} sekunder`;
+  }
+  if (duration.min === 0 && duration.max === 0) {
+    return 'No time estimate';
+  }
+  const total = duration.max - duration.min;
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
+  if (hours > 0) {
+    return `${hours}:${minutes}:${seconds}`;
+  }
+  if (minutes > 0) {
+    return `${minutes}:${seconds}`;
+  }
+
+  return `${seconds} sekunder`;
+}
+
 export function pretty(recipe: Recipe) {
   const ingredients = recipe.ingredients
     .map((ing) => `| ${ing.name} | ${ing.amount} ${ing.unit} |`)
@@ -10,7 +31,7 @@ export function pretty(recipe: Recipe) {
   const steps = recipe.steps
     .map(
       (step, index) =>
-        `${index + 1}. ${step.text}\n\t- time: ${step.duration} seconds\n\t- type: ${step.type}`,
+        `${index + 1}. ${step.text}\n\t- time: ${formatDuration(step.duration)}\n\t- type: ${step.type}`,
     )
     .join('\n');
 
@@ -22,7 +43,11 @@ export function parse(recipe: string): Recipe {
   const title = lines[0].replace(/^#\s+/, '');
   const description = lines[1].replace(/^>\s+/, '');
   const ingredients: { name: string; amount: number; unit: string }[] = [];
-  const steps: { text: string; type: 'step' | 'rest'; duration: number }[] = [];
+  const steps: {
+    text: string;
+    type: 'step' | 'rest';
+    duration: { min: number; max: number };
+  }[] = [];
 
   let inIngredients = false;
   let inSteps = false;
@@ -52,7 +77,11 @@ export function parse(recipe: string): Recipe {
     } else if (inSteps) {
       const stepMatch = line.match(/^\d+\.\s+(.*)$/);
       if (stepMatch) {
-        steps.push({ text: stepMatch[1], type: 'step', duration: 0 });
+        steps.push({
+          text: stepMatch[1],
+          type: 'step',
+          duration: { min: 0, max: 0 },
+        });
       }
     }
   }

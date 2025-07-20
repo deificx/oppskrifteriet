@@ -9,11 +9,15 @@
       class="add-step__type"
       name="type"
       v-model="type" />
+    <text-input placeholder="Instruksjon" type="text" v-model="text" />
     <text-input
-      placeholder="f.eks. Legg til Hvetemel, vann, og salt"
-      type="text"
-      v-model="text" />
-    <text-input placeholder="f.eks. 200s" type="number" v-model="duration" />
+      placeholder="minst n sekunder"
+      type="number"
+      v-model="duration.min" />
+    <text-input
+      placeholder="toppen n sekunder"
+      type="number"
+      v-model="duration.max" />
   </fieldset>
 </template>
 
@@ -24,18 +28,22 @@ import { ModelSelect } from 'vue-search-select';
 import TextInput from '@/components/text-input.vue';
 import { StepType } from '@/types';
 
-const props = defineProps<{ duration: number; text: string; type: StepType }>();
+const props = defineProps<{
+  duration: { min: number; max: number };
+  text: string;
+  type: StepType;
+}>();
 
 const emit = defineEmits<{
   text: [text: string];
   type: [type: StepType];
   delete: void;
-  duration: [duration: number];
+  duration: [duration: { min: number; max: number }];
 }>();
 
 const type = ref<StepType>(props.type);
 const text = ref<string>(props.text);
-const duration = ref<number>(props.duration);
+const duration = ref<{ min: number; max: number }>(props.duration);
 
 watch(type, (u) => emit('type', u));
 watch(text, (t) => emit('text', t));

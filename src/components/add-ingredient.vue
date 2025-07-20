@@ -1,8 +1,8 @@
 <template>
   <fieldset class="add-ingredient">
     <button @click.prevent="$emit('delete')">🚮</button>
-    <text-input v-model="name" placeholder="f.eks. Hvetemel" type="text" />
-    <text-input v-model="amount" type="number" />
+    <text-input v-model="name" placeholder="Ingrediens" type="text" />
+    <text-input v-model="amount" placeholder="Mengde" type="number" />
     <model-select
       :options="[
         { text: 'Gram', value: 'gram' },

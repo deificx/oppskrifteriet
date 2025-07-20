@@ -13,7 +13,9 @@ describe('pretty', () => {
       title: 'Delicious Bread',
       description: 'A simple and delicious bread recipe.',
       ingredients,
-      steps: [{ text: 'Mix ingredients', type: 'step', duration: 0 }],
+      steps: [
+        { text: 'Mix ingredients', type: 'step', duration: { min: 0, max: 0 } },
+      ],
     });
     expect(result).toMatchFileSnapshot('pretty.ingredients.md');
   });
@@ -37,7 +39,9 @@ describe('pretty', () => {
         { name: 'Water', amount: 300, unit: 'ml' },
         { name: 'Yeast', amount: 10, unit: 'g' },
       ],
-      steps: [{ text: 'Mix ingredients', type: 'step', duration: 0 }],
+      steps: [
+        { text: 'Mix ingredients', type: 'step', duration: { min: 0, max: 0 } },
+      ],
     });
   });
 });

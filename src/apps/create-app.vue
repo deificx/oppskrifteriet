@@ -24,7 +24,10 @@
         :type="step.type"
         @text="(text: string) => updateStep(idx, { text })"
         @type="(type: StepType) => updateStep(idx, { type })"
-        @duration="(duration: number) => updateStep(idx, { duration })"
+        @duration="
+          (duration: { min: number; max: number }) =>
+            updateStep(idx, { duration })
+        "
         @delete="() => deleteStep(idx)"></component>
     </template>
     <button @click.prevent="addStep">Legg til steg</button>
@@ -67,7 +70,7 @@ function deleteIngredient(idx: number) {
 }
 
 function addStep() {
-  recipe.steps.push({ duration: 0, text: '', type: 'step' });
+  recipe.steps.push({ duration: { min: 0, max: 0 }, text: '', type: 'step' });
 }
 
 function updateStep(idx: number, patch: Partial<Step>) {

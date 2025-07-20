@@ -1,11 +1,15 @@
 <template>
-  <input
-    :value="modelValue"
-    :type="type"
-    class="text-input"
-    @input="
-      (event) => handleUpdate((event.target as HTMLInputElement).value)
-    " />
+  <label class="text-input" :for="id">
+    <span class="text-input__label">{{ placeholder }}</span>
+    <input
+      :id="id"
+      :value="modelValue"
+      :type="type"
+      class="text-input__input"
+      @input="
+        (event) => handleUpdate((event.target as HTMLInputElement).value)
+      " />
+  </label>
 </template>
 
 <script
@@ -17,11 +21,17 @@
       | { type: Extract<I, 'number'>; value: number }
       | { type: Extract<I, 'text'>; value: string }
   ">
-const props = defineProps<{ modelValue: T['value']; type: I }>();
+const props = defineProps<{
+  modelValue: T['value'];
+  placeholder?: string;
+  type: I;
+}>();
 
 const emit = defineEmits<{
   'update:modelValue': [modelValue: T['value']];
 }>();
+
+const id = `text-input-${Math.random().toString(36).substring(2, 15)}`;
 
 function handleUpdate(value: string) {
   emit(
@@ -76,5 +86,34 @@ function handleUpdate(value: string) {
   width: 100%;
   width: 100%;
   word-wrap: break-word;
+  position: relative;
+}
+
+.text-input__label {
+  background-color: #fff;
+  color: #000000de;
+  display: block;
+  font-size: 0.875em;
+  font-weight: 600;
+  left: 0.5rem;
+  line-height: 1rem;
+  padding: 0 0.5rem;
+  position: absolute;
+  top: -0.5rem;
+}
+
+.text-input__input {
+  background: transparent;
+  border: 0;
+  box-shadow: none !important;
+  box-shadow: none;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  height: auto;
+  line-height: inherit;
+  outline: none;
+  padding: 0;
+  width: 100%;
 }
 </style>

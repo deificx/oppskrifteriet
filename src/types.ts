@@ -1,12 +1,10 @@
 export type StepType = 'step' | 'rest';
 
 export interface Step {
-  duration:
-    | {
-        min: number;
-        max: number;
-      }
-    | number;
+  duration: {
+    min: number;
+    max: number;
+  };
   text: string;
   type: StepType;
 }

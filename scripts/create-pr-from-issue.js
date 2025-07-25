@@ -65,7 +65,7 @@ async function createPullRequestFromIssue(issueNumber) {
   }
 }
 
-if (require.main === module) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const issueNumber = process.argv[2];
   if (!issueNumber) {
     console.error('Please provide an issue number as an argument.');

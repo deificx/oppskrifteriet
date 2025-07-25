@@ -39,7 +39,7 @@ async function createPullRequestFromIssue(issueNumber) {
 
     await mkdirIfNotExists(resolve(__dirname, '..', 'recipes'));
     // Create a new file with the issue title and body
-    const fileName = join(__dirname, '..', 'recipes', `${issue.title}.md`);
+    const fileName = resolve(__dirname, '..', 'recipes', `${issue.title}.md`);
     await writeFile(fileName, `# ${issue.title}\n\n${issue.body}`);
 
     // Stage and commit the new file
@@ -62,6 +62,7 @@ async function createPullRequestFromIssue(issueNumber) {
     console.log(`Pull request created: ${pullRequest.html_url}`);
   } catch (error) {
     console.error('Error creating pull request:', error);
+    process.exit(1);
   }
 }
 

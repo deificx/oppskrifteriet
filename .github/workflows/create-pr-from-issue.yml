@@ -15,40 +15,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
         with:
-          python-version: '3.x'
-      - name: Extract issue details
-        id: issue
+          node-version: '22'
+      - name: Run script to create PR from issue
         run: |
-          echo "title=$(jq -r '.issue.title' <<< "$GITHUB_EVENT_PATH")" >> $GITHUB_OUTPUT
-          echo "body=$(jq -r '.issue.body' <<< "$GITHUB_EVENT_PATH")" >> $GITHUB_OUTPUT
-          echo "number=$(jq -r '.issue.number' <<< "$GITHUB_EVENT_PATH")" >> $GITHUB_OUTPUT
-      - name: Create new branch
-        run: |
-          BRANCH_NAME="recipe-issue-${{ github.event.issue.number }}"
-          git checkout -b "$BRANCH_NAME"
-      - name: Format and create recipe file
-        run: |
-          FILE_NAME="recipes/recipe-${{ github.event.issue.number }}.md"
-          mkdir -p recipes
-          echo "# ${{ github.event.issue.title }}" > "$FILE_NAME"
-          echo "" >> "$FILE_NAME"
-          echo "${{ github.event.issue.body }}" >> "$FILE_NAME"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "$FILE_NAME"
-          git commit -m "Add recipe from issue #${{ github.event.issue.number }}"
-      - name: Push branch
-        run: |
-          BRANCH_NAME="recipe-issue-${{ github.event.issue.number }}"
-          git push origin "$BRANCH_NAME"
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: recipe-issue-${{ github.event.issue.number }}
-          title: 'Add recipe from issue #${{ github.event.issue.number }}'
-          body: 'This PR adds a new recipe based on issue #${{ github.event.issue.number }}.'
-          base: ${{ github.event.repository.default_branch }}
+          npm install
+          node scripts/create-pr-from-issue.js ${{ github.event.issue.number }}

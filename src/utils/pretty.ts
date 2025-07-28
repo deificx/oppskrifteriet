@@ -1,29 +1,25 @@
 import { Recipe } from '@/types';
+import { parsePrettyTime, time } from '@/utils/time';
 
 function formatDuration(duration: { min: number; max: number }) {
-  if (duration.min === duration.max) {
-    return `${duration.min} sekunder`;
-  }
   if (duration.min === 0 && duration.max === 0) {
-    return 'No time estimate';
+    return '';
   }
-  const total = duration.max - duration.min;
-  const hours = Math.floor(total / 3600);
-  const minutes = Math.floor((total % 3600) / 60);
-  const seconds = total % 60;
-  if (hours > 0) {
-    return `${hours}:${minutes}:${seconds}`;
+  if (duration.min !== duration.max) {
+    const plusMinus = (duration.max - duration.min) / 2;
+    const total = duration.min + plusMinus;
+    return (
+      time(`${total}`).format('pretty') +
+      ` ±${time(`${plusMinus}`).format('pretty')}`
+    );
+  } else {
+    return time(`${duration.min}`).format('pretty');
   }
-  if (minutes > 0) {
-    return `${minutes}:${seconds}`;
-  }
-
-  return `${seconds} sekunder`;
 }
 
 export function pretty(recipe: Recipe) {
   const ingredients = recipe.ingredients
-    .map((ing) => `| ${ing.name} | ${ing.amount} ${ing.unit} |`)
+    .map((ing) => `| ${ing.name} | ${ing.amount} | ${ing.unit} |`)
     .join('\n');
 
   const title = `# ${recipe.title}`;
@@ -35,56 +31,62 @@ export function pretty(recipe: Recipe) {
     )
     .join('\n');
 
-  return `${title}\n\n${description}\n\n| Ingrediens | Mengde |\n| --- | --- |\n${ingredients}\n\n## Steps\n\n${steps}\n`;
+  return `${title}\n\n${description}\n\n| Ingrediens | Mengde | Enhet |\n| --- | --- |\n${ingredients}\n\n## Oppskrift\n\n${steps}\n`;
 }
 
-export function parse(recipe: string): Recipe {
-  const lines = recipe.split('\n');
-  const title = lines[0].replace(/^#\s+/, '');
-  const description = lines[1].replace(/^>\s+/, '');
-  const ingredients: { name: string; amount: number; unit: string }[] = [];
-  const steps: {
-    text: string;
-    type: 'step' | 'rest';
-    duration: { min: number; max: number };
-  }[] = [];
+export function parse(input: string): Recipe {
+  const lines = input.split('\n');
+  const recipe: Recipe = {
+    title: lines.find((line) => line.startsWith('# '))?.replace('# ', '') || '',
+    description:
+      lines.find((line) => line.startsWith('> '))?.replace('> ', '') || '',
+    ingredients: lines
+      .filter(
+        (line) =>
+          line.startsWith('| ') &&
+          !line.startsWith('| Ingrediens') &&
+          !line.startsWith('| ---'),
+      )
+      .map((line) => {
+        const parts = line.split('|').map((part) => part.trim());
+        return {
+          name: parts[1] || '',
+          amount: parseFloat(parts[2]) || 0,
+          unit: parts[3] || '',
+        };
+      }),
+    steps: lines
+      .slice(lines.indexOf('## Oppskrift') + 1)
+      .filter(Boolean)
+      .reduce(
+        (acc, line) => {
+          const stepMatch = line.match(/^\d+\.\s(.+)/);
+          if (stepMatch) {
+            acc.push({
+              text: stepMatch[1].trim(),
+              type: 'step',
+              duration: { min: 0, max: 0 },
+            });
+          }
+          if (line.startsWith('\t- time: ')) {
+            const timeMatch = line.match(/time:\s(.+?)$/);
+            if (timeMatch) {
+              acc[acc.length - 1].duration = parsePrettyTime(
+                timeMatch[1].trim(),
+              );
+            }
+          }
+          if (line.startsWith('\t- type: ')) {
+            const typeMatch = line.match(/type:\s(.+)/);
+            if (typeMatch) {
+              acc[acc.length - 1].type = typeMatch[1].trim() as 'step' | 'rest';
+            }
+          }
+          return acc;
+        },
+        [] as Recipe['steps'],
+      ),
+  };
 
-  let inIngredients = false;
-  let inSteps = false;
-
-  for (const line of lines.slice(2)) {
-    if (line.startsWith('|')) {
-      if (!inIngredients) {
-        inIngredients = true;
-        continue;
-      }
-      if (inSteps) continue; // Skip if already in steps
-      if (line.trim() === '| Ingrediens | Mengde |') continue; // Skip header
-      if (line.trim() === '| --- | --- |') continue; // Skip separator
-      const parts = line
-        .split('|')
-        .map((part) => part.trim())
-        .filter(Boolean);
-      // parse ingredient
-      if (parts.length === 2) {
-        const [name, amountUnit] = parts;
-        const [amount, unit] = amountUnit.split(' ');
-        ingredients.push({ name, amount: parseFloat(amount), unit });
-      }
-    } else if (line.startsWith('## Steps')) {
-      inSteps = true;
-      continue;
-    } else if (inSteps) {
-      const stepMatch = line.match(/^\d+\.\s+(.*)$/);
-      if (stepMatch) {
-        steps.push({
-          text: stepMatch[1],
-          type: 'step',
-          duration: { min: 0, max: 0 },
-        });
-      }
-    }
-  }
-
-  return { title, description, ingredients, steps };
+  return recipe;
 }

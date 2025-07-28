@@ -2,14 +2,20 @@
 
 > A simple and delicious bread recipe.
 
-| Ingrediens | Mengde |
+| Ingrediens | Mengde | Enhet |
 | --- | --- |
-| Flour | 500 g |
-| Water | 300 ml |
-| Yeast | 10 g |
+| Flour | 500 | g |
+| Water | 300 | ml |
+| Yeast | 10 | g |
 
-## Steps
+## Oppskrift
 
 1. Mix ingredients
-	- time: 0 sekunder
+	- time: 2 minutter og 15 sekunder ±45 sekunder
+	- type: step
+2. Rest dough
+	- time: en time
+	- type: rest
+3. Bake bread
+	- time: 22 minutter og 30 sekunder ±2 minutter og 30 sekunder
 	- type: step

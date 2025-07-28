@@ -20,13 +20,17 @@ export default defineConfig(({ command, mode }) => ({
           return;
         }
         const ghpages = await import('gh-pages');
-        ghpages.publish('dist', function (err) {
-          if (err) {
-            console.error('failed: ', err);
-            return;
-          }
-          console.log('published dist');
-        });
+        ghpages.publish(
+          'dist',
+          { cname: 'oppskrifteriet.no', nojekyll: true },
+          function (err) {
+            if (err) {
+              console.error('failed: ', err);
+              return;
+            }
+            console.log('published dist');
+          },
+        );
       },
     },
   ],

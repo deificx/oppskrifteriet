@@ -1,6 +1,6 @@
 <template>
   <article>
-    <aside>Start time {{ time.format(now) }}</aside>
+    <aside>Start time {{ formatedTime }}</aside>
     <ol id="recipe">
       <recipe-step
         v-for="(step, idx) of steps"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 
 import RecipeStep from '@/components/recipe-step.vue';
 import type { Step } from '@/types';
@@ -23,6 +23,9 @@ import { time } from '@/utils/time';
 const now = ref<Date>();
 const timer = ref<number>();
 const currentStep = ref<number>(0);
+const formatedTime = computed(() =>
+  time(String((now.value?.getTime() ?? 0) / 1000)).format(),
+);
 
 const steps: Step[] = [
   {

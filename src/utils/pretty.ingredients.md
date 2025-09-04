@@ -2,11 +2,11 @@
 
 > A simple and delicious bread recipe.
 
-| Ingrediens | Mengde | Enhet |
-| --- | --- |
-| Flour | 500 | g |
-| Water | 300 | ml |
-| Yeast | 10 | g |
+| Ingrediens | Mengde | Enhet | ID |
+| --- | --- | --- | --- |
+| Flour | 500 | g | A |
+| Water | 300 | ml | B |
+| Yeast | 10 | g | C |
 
 ## Oppskrift
 

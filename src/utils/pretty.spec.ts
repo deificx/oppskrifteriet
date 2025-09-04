@@ -8,9 +8,9 @@ const recipe: Recipe = {
   title: 'Delicious Bread',
   description: 'A simple and delicious bread recipe.',
   ingredients: [
-    { name: 'Flour', amount: 500, unit: 'g' },
-    { name: 'Water', amount: 300, unit: 'ml' },
-    { name: 'Yeast', amount: 10, unit: 'g' },
+    { id: 'A', name: 'Flour', amount: 500, unit: 'g' },
+    { id: 'B', name: 'Water', amount: 300, unit: 'ml' },
+    { id: 'C', name: 'Yeast', amount: 10, unit: 'g' },
   ],
   steps: [
     {

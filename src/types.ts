@@ -5,13 +5,15 @@ export interface Step {
     min: number;
     max: number;
   };
+  ingredients?: { id: string; percentage: number; text: string }[];
   text: string;
   type: StepType;
 }
 
 export interface Ingredient {
-  name: string;
   amount: number;
+  id: string;
+  name: string;
   unit: string;
 }
 

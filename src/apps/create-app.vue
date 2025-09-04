@@ -54,8 +54,19 @@ const recipe = reactive<Recipe>({
   title: '',
 });
 
+let count = 0;
+function generateId() {
+  return String.fromCharCode(65 + count++);
+}
+
 function addIngredient() {
-  recipe.ingredients.push({ amount: 0, name: '', unit: 'gram' });
+  recipe.ingredients.push({
+    amount: 0,
+    id: generateId(),
+    name: '',
+    unit: 'gram',
+  });
+  console.log(recipe.ingredients.at(-1));
 }
 
 function updateIngredient(idx: number, patch: Partial<Ingredient>) {

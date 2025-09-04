@@ -19,7 +19,7 @@ function formatDuration(duration: { min: number; max: number }) {
 
 export function pretty(recipe: Recipe) {
   const ingredients = recipe.ingredients
-    .map((ing) => `| ${ing.name} | ${ing.amount} | ${ing.unit} |`)
+    .map((ing) => `| ${ing.name} | ${ing.amount} | ${ing.unit} | ${ing.id} |`)
     .join('\n');
 
   const title = `# ${recipe.title}`;
@@ -31,7 +31,7 @@ export function pretty(recipe: Recipe) {
     )
     .join('\n');
 
-  return `${title}\n\n${description}\n\n| Ingrediens | Mengde | Enhet |\n| --- | --- |\n${ingredients}\n\n## Oppskrift\n\n${steps}\n`;
+  return `${title}\n\n${description}\n\n| Ingrediens | Mengde | Enhet | ID |\n| --- | --- | --- | --- |\n${ingredients}\n\n## Oppskrift\n\n${steps}\n`;
 }
 
 export function parse(input: string): Recipe {
@@ -47,12 +47,13 @@ export function parse(input: string): Recipe {
           !line.startsWith('| Ingrediens') &&
           !line.startsWith('| ---'),
       )
-      .map((line) => {
+      .map((line, idx) => {
         const parts = line.split('|').map((part) => part.trim());
         return {
-          name: parts[1] || '',
           amount: parseFloat(parts[2]) || 0,
-          unit: parts[3] || '',
+          id: parts[4] ?? String.fromCharCode(65 + idx),
+          name: parts[1] ?? '',
+          unit: parts[3] ?? '',
         };
       }),
     steps: lines
